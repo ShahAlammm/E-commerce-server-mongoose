@@ -6,10 +6,11 @@ const createProductIntoDB = async (product: TProduct) => {
   return result;
 };
 
+// Create a case-insensitive regex for the search term
 const getAllAndSearchProductsInDB = async (searchTerm: string) => {
   try {
     if (searchTerm) {
-      const regex = new RegExp(searchTerm, 'i'); // Create a case-insensitive regex for the search term
+      const regex = new RegExp(searchTerm, 'i');
       const result = await ProductModel.find({
         $or: [
           { name: regex },
