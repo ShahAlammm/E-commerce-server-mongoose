@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import {TProduct } from './product/product.interface';
+import { TProduct } from './product/product.interface';
 const productSchema = new Schema<TProduct>({
   name: { type: String, required: true },
   description: { type: String, required: true },
@@ -16,15 +16,14 @@ const productSchema = new Schema<TProduct>({
   },
   isDeleted: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 });
 
-
-productSchema.pre("find", function(next){
-  this.find({isDeleted: {$ne: true}})
-  next()
-})
+productSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
 productSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
@@ -35,7 +34,5 @@ productSchema.pre('findOne', function (next) {
 //   this.pipeline().unshift({$match: {isDeleted: {$ne: true}}});
 //   next();
 // });
-
-
 
 export const ProductModel = model<TProduct>('Product', productSchema);

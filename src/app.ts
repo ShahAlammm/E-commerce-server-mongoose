@@ -14,8 +14,8 @@ app.use('/api/orders', OrderRoutes);
 
 
 const getController = (req: Request, res: Response) => {
-  const a = 12;
-  res.send(a);
+
+  res.send("Server is running..........");
 };
 
 app.get('/', getController);
