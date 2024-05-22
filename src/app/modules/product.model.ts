@@ -31,10 +31,10 @@ productSchema.pre('findOne', function (next) {
   next();
 });
 
-productSchema.pre('aggregate', function (next) {
-  this.pipeline().unshift({$match: {isDeleted: {$ne: true}}});
-  next();
-});
+// productSchema.pre('aggregate', function (next) {
+//   this.pipeline().unshift({$match: {isDeleted: {$ne: true}}});
+//   next();
+// });
 
 
 

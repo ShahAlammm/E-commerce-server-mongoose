@@ -31,8 +31,8 @@ const getAllAndSearchProductsInDB = async (searchTerm: string) => {
 };
 
 const getSingleProductIntoDB = async (_id: string) => {
-  // const result = await ProductModel.findOne({ _id });
-const result = await ProductModel.aggregate([{$match: {_id: _id}}])
+  const result = await ProductModel.findOne({ _id });
+// const result = await ProductModel.aggregate([{$match: {_id: _id}}])
 
   return result;
 };
