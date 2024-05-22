@@ -4,9 +4,20 @@
 
 1. Clone the repository
 2. Install dependencies:
+
 ```typescript
- `npm install`
+ npm install
 ```
+
 3. Set up environment variables (e.g., MongoDB connection string)
-4. Compile TypeScript: `npm run build`
-5. Start the server: `npm start:dev`
+4. Compile TypeScript:
+
+```typescript
+ npm run build
+```
+
+5. Start the server:
+
+```typescript
+ npm start:dev
+```
