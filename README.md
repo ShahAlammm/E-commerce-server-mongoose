@@ -2,7 +2,10 @@
 
 ## Setup Instructions
 
-1. Clone the repository
+1. Clone the repository-
+```bash
+ https://github.com/ShahAlammm/E-commerce-server-mongoose.git
+```
 2. Install dependencies:
 
 ```typescript
