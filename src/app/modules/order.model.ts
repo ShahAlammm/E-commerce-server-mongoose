@@ -2,8 +2,6 @@ import { Schema, model } from 'mongoose';
 import { ProductModel } from './product.model';
 import { TOrder } from './order/order.interface';
 
-
-
 const orderSchema = new Schema<TOrder>({
   email: { type: String, required: true },
   productId: { type: String, required: true },
@@ -11,13 +9,9 @@ const orderSchema = new Schema<TOrder>({
   quantity: { type: Number, required: true },
 });
 
-
-
 orderSchema.pre<TOrder>('save', async function (next) {
   try {
     const product = await ProductModel.findById(this.productId);
-    // eslint-disable-next-line no-console
-    console.log(product);
     if (!product) {
       throw new Error('Product not found');
     }
@@ -33,9 +27,8 @@ orderSchema.pre<TOrder>('save', async function (next) {
     await product.save();
     next();
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error:any) {
-
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
     next(error);
   }
 });

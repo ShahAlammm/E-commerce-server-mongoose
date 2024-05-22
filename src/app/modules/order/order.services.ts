@@ -1,5 +1,5 @@
-import { OrderModel } from "../order.model";
-import { TOrder } from "./order.interface";
+import { OrderModel } from '../order.model';
+import { TOrder } from './order.interface';
 
 const createOrderIntoDB = async (orderData: TOrder) => {
   try {
@@ -7,7 +7,7 @@ const createOrderIntoDB = async (orderData: TOrder) => {
     const order = new OrderModel(orderData);
     const result = await order.save();
     return result;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     throw new Error(error.message);
   }
@@ -17,7 +17,7 @@ const getAllAndSearchOrdersInDB = async (email: string) => {
   try {
     if (email) {
       const result = await OrderModel.find({
-        email
+        email,
       });
       return result;
     } else {
@@ -28,7 +28,6 @@ const getAllAndSearchOrdersInDB = async (email: string) => {
     throw new Error(`Unable to search Orders: ${error}`);
   }
 };
-
 
 export const OrderServices = {
   createOrderIntoDB,

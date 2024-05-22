@@ -2,13 +2,11 @@ import { Request, Response } from 'express';
 import { OrderServices } from './order.services';
 import { orderValidationSchema } from './order.validate';
 
-
-
 const createOrder = async (req: Request, res: Response) => {
   try {
-    const { order: orderData } = req.body;
+    const order = req.body;
 
-    const { error, value } = orderValidationSchema.validate(orderData);
+    const { error, value } = orderValidationSchema.validate(order);
 
     const result = await OrderServices.createOrderIntoDB(value);
 
@@ -24,7 +22,7 @@ const createOrder = async (req: Request, res: Response) => {
       message: 'Order created successfully!',
       data: result,
     });
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -34,31 +32,24 @@ const createOrder = async (req: Request, res: Response) => {
   }
 };
 
+// Get
 const getAllAndSearchOrder = async (req: Request, res: Response) => {
   try {
     const { email } = req.query;
 
-    if (email) {
-        const result = await OrderServices.getAllAndSearchOrdersInDB(
-          email as string,
-        );
+    const result = await OrderServices.getAllAndSearchOrdersInDB(
+      email as string,
+    );
 
-        const message = email
-          ? `Orders matching search term '${email}' fetched successfully!`
-          : 'Orders fetched successfully!';
+    const message = email
+      ? `Orders fetched successfully for user ${email}!`
+      : 'Orders fetched successfully!';
 
-        res.status(200).json({
-          success: true,
-          message,
-          data: result,
-        });
-    } else {
-        res.status(200).json({
-          success: false,
-          message: "No Email Here",
-          data: null
-        })
-    }
+    res.status(200).json({
+      success: true,
+      message,
+      data: result,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -68,8 +59,6 @@ const getAllAndSearchOrder = async (req: Request, res: Response) => {
     });
   }
 };
-
-
 
 export const OrderController = {
   createOrder,
