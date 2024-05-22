@@ -1,86 +1,41 @@
 import { Schema, model } from 'mongoose';
-import {
-  Guardian,
-  LocalGuardian,
-  Student,
-  UserName,
-} from './product/product.interface';
-
-const userNameSchema = new Schema<UserName>({
-  firstName: {
-    type: String,
+import {TProduct } from './product/product.interface';
+const productSchema = new Schema<TProduct>({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  price: { type: Number, required: true },
+  category: { type: String, required: true },
+  tags: { type: [String], required: true },
+  variants: {
+    type: [{ type: { type: String }, value: String }],
     required: true,
   },
-  middleName: {
-    type: String,
+  inventory: {
+    quantity: { type: Number, required: true },
+    inStock: { type: Boolean, required: true },
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  }
 });
 
-const guardianSchema = new Schema<Guardian>({
-  fatherName: {
-    type: String,
-    required: true,
-  },
-  fatherOccupation: {
-    type: String,
-    required: true,
-  },
-  fatherContactNo: {
-    type: String,
-    required: true,
-  },
-  motherName: {
-    type: String,
-    required: true,
-  },
-  motherOccupation: {
-    type: String,
-    required: true,
-  },
-  motherContactNo: {
-    type: String,
-    required: true,
-  },
+
+productSchema.pre("find", function(next){
+  this.find({isDeleted: {$ne: true}})
+  next()
+})
+
+productSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
 });
 
-const localGuardianSchema = new Schema<LocalGuardian>({
-  name: {
-    type: String,
-    required: true,
-  },
-  occupation: {
-    type: String,
-    required: true,
-  },
-  contactNo: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-    required: true,
-  },
+productSchema.pre('aggregate', function (next) {
+  this.pipeline().unshift({$match: {isDeleted: {$ne: true}}});
+  next();
 });
 
-const studentSchema = new Schema<Student>({
-  id: { type: String },
-  name: userNameSchema,
-  gender: ['male', 'female'],
-  dateOfBirth: { type: String },
-  email: { type: String, required: true },
-  contactNo: { type: String, required: true },
-  emergencyContactNo: { type: String, required: true },
-  bloodGroup: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
-  guardian: guardianSchema,
-  localGuardian: localGuardianSchema,
-  profileImg: { type: String },
-  isActive: ['active', 'blocked'],
-});
 
-export const ProductModel = model<Student>('Student', studentSchema);
+
+export const ProductModel = model<TProduct>('Product', productSchema);
